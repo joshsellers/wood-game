@@ -6,9 +6,9 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.jahbz.wood.core.Main;
 import com.jahbz.wood.gamepad.GamePadCode;
-import com.jahbz.wood.world.TileType;
+import com.jahbz.wood.world.World;
+import com.jahbz.wood.world.tiles.TileType;
 
 public class CameraController implements ControllerListener, InputProcessor {
     public final static float DEAD_ZONE = 0.3f;
@@ -16,10 +16,13 @@ public class CameraController implements ControllerListener, InputProcessor {
     private OrthographicCamera cam;
     private Controller gamePad = null;
 
+    private boolean controllerConnected = false;
+
     public CameraController(OrthographicCamera cam) {
         this.cam = cam;
 
         for (Controller controller : Controllers.getControllers()) {
+            controllerConnected = true;
             Gdx.app.log("CameraController", controller.getName());
             gamePad = controller;
             Gdx.input.setCursorCatched(true);
@@ -34,39 +37,43 @@ public class CameraController implements ControllerListener, InputProcessor {
     }
 
     public void update() {
-        float currentSpeed = 2.5f;
-        float joyX = gamePad.getAxis(GamePadCode.LEFT_STICK_X.getCode());
-        float joyY = gamePad.getAxis(GamePadCode.LEFT_STICK_Y.getCode());
-        boolean deadZoned = joyX > -DEAD_ZONE && joyX < DEAD_ZONE &&
-                            joyY > -DEAD_ZONE && joyY < DEAD_ZONE;
-        if (deadZoned) {
-            joyX = 0;
-            joyY = 0;
+        if (controllerConnected) {
+            float currentSpeed = 2.5f;
+            float joyX = gamePad.getAxis(GamePadCode.RIGHT_STICK_X.getCode());
+            float joyY = gamePad.getAxis(GamePadCode.RIGHT_STICK_Y.getCode());
+            boolean deadZoned = joyX > -DEAD_ZONE && joyX < DEAD_ZONE &&
+                    joyY > -DEAD_ZONE && joyY < DEAD_ZONE;
+            if (deadZoned) {
+                joyX = 0;
+                joyY = 0;
+            }
+
+            float velocityX = (joyX) * currentSpeed;
+            float velocityY = -((joyY) * currentSpeed);
+
+            float viewW = getCamera().viewportWidth;
+            float viewH = getCamera().viewportHeight;
+            float camX = getCamera().position.x - viewW / 2;
+            float camY = getCamera().position.y - viewH / 2;
+            int w = World.MAP_WIDTH * TileType.TILE_SIZE;
+            int h = World.MAP_HEIGHT * TileType.TILE_SIZE;
+            if (camX + viewW + velocityX < w && camX + velocityX >= 0)
+                getCamera().translate(velocityX, 0);
+            if (camY + viewH + velocityY < h && camY + velocityY >= 0)
+                getCamera().translate(0, velocityY);
         }
-
-        float velocityX = (joyX) * currentSpeed;
-        float velocityY = -((joyY) * currentSpeed);
-
-        float viewW = getCamera().viewportWidth;
-        float viewH = getCamera().viewportHeight;
-        float camX = getCamera().position.x - viewW / 2;
-        float camY = getCamera().position.y - viewH / 2;
-        int w = Main.MAP_WIDTH * TileType.TILE_SIZE;
-        int h = Main.MAP_HEIGHT * TileType.TILE_SIZE;
-        if (camX + viewW + velocityX < w && camX + velocityX >= 0)
-            getCamera().translate(velocityX, 0);
-        if (camY + viewH + velocityY < h && camY + velocityY >= 0)
-            getCamera().translate(0, velocityY);
     }
 
     @Override
     public void connected(Controller controller) {
         Gdx.input.setCursorCatched(true);
+        controllerConnected = true;
     }
 
     @Override
     public void disconnected(Controller controller) {
         Gdx.input.setCursorCatched(false);
+        controllerConnected = false;
     }
 
     @Override
@@ -111,6 +118,7 @@ public class CameraController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+
         return false;
     }
 

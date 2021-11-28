@@ -1,4 +1,4 @@
-package com.jahbz.wood.world;
+package com.jahbz.wood.world.tiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,7 +11,7 @@ public class TileType extends StaticTiledMapTile {
     public final static int TILE_SIZE = 16;
 
     private final static Texture RAW_TILE_SHEET = new Texture("sprite_sheet.png");
-    private final static TextureRegion[][] TILE_SHEET = TextureRegion.split(RAW_TILE_SHEET,
+    public final static TextureRegion[][] TILE_SHEET = TextureRegion.split(RAW_TILE_SHEET,
             TILE_SIZE, TILE_SIZE);
 
     // Define tile types
