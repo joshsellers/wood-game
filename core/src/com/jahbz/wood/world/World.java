@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.jahbz.wood.core.SpriteSheet;
 import com.jahbz.wood.world.entities.Entity;
 import com.jahbz.wood.world.tiles.TileType;
 
@@ -55,8 +56,8 @@ public class World {
         TiledMap map = new TiledMap();
         MapLayers layers = map.getLayers();
         for (int l = 0; l < 1; l++) {
-            TiledMapTileLayer layer = new TiledMapTileLayer(40, 25, TileType.TILE_SIZE,
-                    TileType.TILE_SIZE);
+            TiledMapTileLayer layer = new TiledMapTileLayer(40, 25, SpriteSheet.TILE_SIZE,
+                    SpriteSheet.TILE_SIZE);
             for (int x = 0; x < layer.getWidth(); x++) {
                 for (int y = 0; y < layer.getHeight(); y++) {
                     int id = (int) (Math.random() * 5) + 1;

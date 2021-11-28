@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.jahbz.wood.core.SpriteSheet;
 import com.jahbz.wood.world.tiles.TileType;
 
 public class TestEntity extends Entity {
@@ -13,12 +14,12 @@ public class TestEntity extends Entity {
         super(0x00, x, y, 16, 32);
         Pixmap pm = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
-        TextureRegion topRegion = TileType.TILE_SHEET[25][9];
+        TextureRegion topRegion = SpriteSheet.SPRITE_SHEET[25][9];
         Texture topTile = topRegion.getTexture();
         topTile.getTextureData().prepare();
         Pixmap top = topTile.getTextureData().consumePixmap();
 
-        TextureRegion bottomRegion = TileType.TILE_SHEET[26][9];
+        TextureRegion bottomRegion = SpriteSheet.SPRITE_SHEET[26][9];
         Texture bottomTile = bottomRegion.getTexture();
         bottomTile.getTextureData().prepare();
         Pixmap bottom = bottomTile.getTextureData().consumePixmap();

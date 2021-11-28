@@ -3,24 +3,19 @@ package com.jahbz.wood.world.tiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.jahbz.wood.core.SpriteSheet;
 
 public class TileType extends StaticTiledMapTile {
     public final static int NUM_TYPE_TYPES = 6;
     public final static TileType[] TILE_TYPES = new TileType[NUM_TYPE_TYPES];
 
-    public final static int TILE_SIZE = 16;
-
-    private final static Texture RAW_TILE_SHEET = new Texture("sprite_sheet.png");
-    public final static TextureRegion[][] TILE_SHEET = TextureRegion.split(RAW_TILE_SHEET,
-            TILE_SIZE, TILE_SIZE);
-
     // Define tile types
-    public final static TileType VOID    = new TileType(0, "Void",  TILE_SHEET[0][0]);
-    public final static TileType GRASS_1 = new TileType(1, "Grass", TILE_SHEET[0][1]);
-    public final static TileType GRASS_2 = new TileType(2, "Grass", TILE_SHEET[3][1]);
-    public final static TileType GRASS_3 = new TileType(3, "Grass", TILE_SHEET[3][2]);
-    public final static TileType GRASS_4 = new TileType(4, "Grass", TILE_SHEET[4][1]);
-    public final static TileType GRASS_5 = new TileType(5, "Grass", TILE_SHEET[4][2]);
+    public final static TileType VOID    = new TileType(0, "Void",  SpriteSheet.SPRITE_SHEET[0][0]);
+    public final static TileType GRASS_1 = new TileType(1, "Grass", SpriteSheet.SPRITE_SHEET[0][1]);
+    public final static TileType GRASS_2 = new TileType(2, "Grass", SpriteSheet.SPRITE_SHEET[3][1]);
+    public final static TileType GRASS_3 = new TileType(3, "Grass", SpriteSheet.SPRITE_SHEET[3][2]);
+    public final static TileType GRASS_4 = new TileType(4, "Grass", SpriteSheet.SPRITE_SHEET[4][1]);
+    public final static TileType GRASS_5 = new TileType(5, "Grass", SpriteSheet.SPRITE_SHEET[4][2]);
 
     private String name;
 

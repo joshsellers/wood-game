@@ -55,8 +55,8 @@ public class CameraController implements ControllerListener, InputProcessor {
             float viewH = getCamera().viewportHeight;
             float camX = getCamera().position.x - viewW / 2;
             float camY = getCamera().position.y - viewH / 2;
-            int w = World.MAP_WIDTH * TileType.TILE_SIZE;
-            int h = World.MAP_HEIGHT * TileType.TILE_SIZE;
+            int w = World.MAP_WIDTH * SpriteSheet.TILE_SIZE;
+            int h = World.MAP_HEIGHT * SpriteSheet.TILE_SIZE;
             if (camX + viewW + velocityX < w && camX + velocityX >= 0)
                 getCamera().translate(velocityX, 0);
             if (camY + viewH + velocityY < h && camY + velocityY >= 0)
