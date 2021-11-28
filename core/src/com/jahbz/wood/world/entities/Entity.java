@@ -3,7 +3,7 @@ package com.jahbz.wood.world.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class Entity {
-    protected int x, y;
+    protected float x, y;
     protected int width, height;
 
     protected boolean active;
@@ -34,11 +34,11 @@ public abstract class Entity {
 
     public abstract void dispose();
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 

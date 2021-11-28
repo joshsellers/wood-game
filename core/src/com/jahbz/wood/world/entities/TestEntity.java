@@ -38,7 +38,7 @@ public class TestEntity extends Entity {
 
     @Override
     protected void tick() {
-
+        x += 0.5;
     }
 
     @Override

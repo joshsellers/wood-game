@@ -8,7 +8,6 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.jahbz.wood.gamepad.GamePadCode;
 import com.jahbz.wood.world.World;
-import com.jahbz.wood.world.tiles.TileType;
 
 public class CameraController implements ControllerListener, InputProcessor {
     public final static float DEAD_ZONE = 0.3f;
