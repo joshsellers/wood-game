@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jahbz.wood.core.SpriteSheet;
-import com.jahbz.wood.world.tiles.TileType;
+import com.jahbz.wood.world.World;
 
 public class TestEntity extends Entity {
     private final Texture texture;
 
-    public TestEntity(int x, int y) {
-        super(0x00, x, y, 16, 32);
+    public TestEntity(int x, int y, World world) {
+        super(0x00, x, y, 16, 32, world);
         Pixmap pm = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
         TextureRegion topRegion = SpriteSheet.SPRITE_SHEET[25][9];
@@ -39,6 +39,7 @@ public class TestEntity extends Entity {
     @Override
     protected void tick() {
         x += 0.5;
+        System.out.println(world.getTile((int) (x + width) >> 4, (int) y >> 4).getName());
     }
 
     @Override

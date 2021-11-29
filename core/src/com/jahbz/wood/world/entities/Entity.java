@@ -1,27 +1,36 @@
 package com.jahbz.wood.world.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.jahbz.wood.world.World;
 
 public abstract class Entity {
     protected float x, y;
     protected int width, height;
 
+    protected Rectangle bounds;
+
     protected boolean active;
 
     private final int id;
 
-    public Entity(int id, int x, int y, int width, int height) {
+    protected World world;
+
+    public Entity(int id, float x, float y, int width, int height, World world) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.world = world;
+
+        bounds = new Rectangle(x, y, width, height);
 
         active = true;
     }
 
     public void update() {
-
+        bounds.setPosition(x, y);
         tick();
     }
     protected abstract void tick();
@@ -64,5 +73,9 @@ public abstract class Entity {
 
     public void deactivate() {
         active = false;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }

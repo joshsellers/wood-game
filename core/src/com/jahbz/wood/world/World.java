@@ -18,6 +18,9 @@ public class World {
     public static final int MAP_WIDTH = 40;
     public static final int MAP_HEIGHT = 25;
 
+    public static final int TILE_SHIFT = 4;
+
+    private TiledMap map;
     private TiledMapRenderer renderer;
 
     private final List<Entity> entities = new ArrayList<>();
@@ -53,7 +56,7 @@ public class World {
     }
 
     private void createMap() {
-        TiledMap map = new TiledMap();
+        map = new TiledMap();
         MapLayers layers = map.getLayers();
         for (int l = 0; l < 1; l++) {
             TiledMapTileLayer layer = new TiledMapTileLayer(40, 25, SpriteSheet.TILE_SIZE,
@@ -70,6 +73,10 @@ public class World {
             layers.add(layer);
         }
 
+        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+        cell.setTile(TileType.VOID);
+        ((TiledMapTileLayer) map.getLayers().get(0)).setCell(30, 3, cell);
+
         renderer = new OrthogonalTiledMapRenderer(map);
     }
 
@@ -79,6 +86,12 @@ public class World {
 
     public synchronized void addEntity(Entity e) {
         getEntities().add(e);
+    }
+
+    public TileType getTile(int x, int y) {
+        if (x < MAP_WIDTH && x >= 0 && y < MAP_HEIGHT && y >= 0)
+            return (TileType) ((TiledMapTileLayer) map.getLayers().get(0)).getCell(x, y).getTile();
+        return TileType.VOID;
     }
 
     public OrthographicCamera getCamera() {

@@ -34,7 +34,8 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 
 		world = new World(camera);
-		world.addEntity(new TestEntity(50, 50));
+		world.addEntity(new TestEntity(50, 50, world));
+		world.addEntity(new TestEntity(10, 100, world));
 	}
 
 	@Override
