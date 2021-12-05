@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.jahbz.wood.gamepad.GamePadCode;
 import com.jahbz.wood.world.World;
 
-public class CameraController implements ControllerListener, InputProcessor {
+public class DebugControllerInterface implements ControllerListener, InputProcessor {
     public final static float DEAD_ZONE = 0.3f;
 
     private OrthographicCamera cam;
@@ -17,7 +17,7 @@ public class CameraController implements ControllerListener, InputProcessor {
 
     private boolean controllerConnected = false;
 
-    public CameraController(OrthographicCamera cam) {
+    public DebugControllerInterface(OrthographicCamera cam) {
         this.cam = cam;
 
         for (Controller controller : Controllers.getControllers()) {
@@ -117,7 +117,7 @@ public class CameraController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-
+        if (keycode == 111) Gdx.app.exit();
         return false;
     }
 

@@ -19,8 +19,8 @@ import java.util.List;
 import static com.jahbz.wood.core.Utility.random;
 
 public class World {
-    public static final int MAP_WIDTH = 32;
-    public static final int MAP_HEIGHT = 18;
+    public static final int MAP_WIDTH = 50; //32
+    public static final int MAP_HEIGHT = 50; //18
 
     private TiledMap map;
     private TiledMapRenderer renderer;
