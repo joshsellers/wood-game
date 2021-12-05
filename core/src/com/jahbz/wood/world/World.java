@@ -1,5 +1,6 @@
 package com.jahbz.wood.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayers;
@@ -12,13 +13,14 @@ import com.jahbz.wood.world.entities.Entity;
 import com.jahbz.wood.world.tiles.TileType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class World {
-    public static final int MAP_WIDTH = 40;
-    public static final int MAP_HEIGHT = 25;
+import static com.jahbz.wood.core.Utility.random;
 
-    public static final int TILE_SHIFT = 4;
+public class World {
+    public static final int MAP_WIDTH = 32;
+    public static final int MAP_HEIGHT = 18;
 
     private TiledMap map;
     private TiledMapRenderer renderer;
@@ -40,6 +42,12 @@ public class World {
             if (e.isActive())
                 e.update();
         }
+
+        try {
+            Collections.sort(getEntities());
+        } catch (Exception e) {
+            Gdx.app.log("World", e.getMessage());
+        }
     }
 
     public void render() {
@@ -59,11 +67,11 @@ public class World {
         map = new TiledMap();
         MapLayers layers = map.getLayers();
         for (int l = 0; l < 1; l++) {
-            TiledMapTileLayer layer = new TiledMapTileLayer(40, 25, SpriteSheet.TILE_SIZE,
+            TiledMapTileLayer layer = new TiledMapTileLayer(MAP_WIDTH, MAP_HEIGHT, SpriteSheet.TILE_SIZE,
                     SpriteSheet.TILE_SIZE);
             for (int x = 0; x < layer.getWidth(); x++) {
                 for (int y = 0; y < layer.getHeight(); y++) {
-                    int id = (int) (Math.random() * 5) + 1;
+                    int id = random(TileType.GRASS_1.getId(), TileType.GRASS_5.getId());
 
                     TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
                     cell.setTile(TileType.TILE_TYPES[id]);
@@ -72,10 +80,6 @@ public class World {
             }
             layers.add(layer);
         }
-
-        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-        cell.setTile(TileType.VOID);
-        ((TiledMapTileLayer) map.getLayers().get(0)).setCell(30, 3, cell);
 
         renderer = new OrthogonalTiledMapRenderer(map);
     }

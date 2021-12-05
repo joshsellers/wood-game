@@ -5,8 +5,8 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.jahbz.wood.core.SpriteSheet;
 
 public class TileType extends StaticTiledMapTile {
-    public final static int NUM_TYPE_TYPES = 6;
-    public final static TileType[] TILE_TYPES = new TileType[NUM_TYPE_TYPES];
+    public final static int NUM_TILE_TYPES = 6;
+    public final static TileType[] TILE_TYPES = new TileType[NUM_TILE_TYPES];
 
     // Define tile types
     public final static TileType VOID    = new TileType(0, "Void",  true,

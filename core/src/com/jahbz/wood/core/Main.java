@@ -7,9 +7,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jahbz.wood.world.World;
-import com.jahbz.wood.world.entities.TestEntity;
+import com.jahbz.wood.world.entities.TestMob;
+
+import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
+	public static final String VERSION = "0.1";
+
+	private static final float VIEWPORT_SCALE = 3;
+
 	private SpriteBatch batch;
 
 	private OrthographicCamera camera;
@@ -25,7 +31,7 @@ public class Main extends ApplicationAdapter {
 		float h = Gdx.graphics.getHeight();
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, w / 3, h / 3);
+		camera.setToOrtho(false, w / VIEWPORT_SCALE, h / VIEWPORT_SCALE);
 
 		camControl = new CameraController(camera);
 		Gdx.input.setInputProcessor(camControl);
@@ -34,21 +40,33 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 
 		world = new World(camera);
-		world.addEntity(new TestEntity(50, 50, world));
-		world.addEntity(new TestEntity(10, 100, world));
+		int numTestEntities = 1;
+		for (int i = 0; i < numTestEntities; i++) {
+			int ww = World.MAP_WIDTH;
+			int wh = World.MAP_HEIGHT;
+			world.addEntity(new TestMob(random(0, ww) << SpriteSheet.TILE_SHIFT,
+					random(0, wh << SpriteSheet.TILE_SHIFT), world));
+			System.out.println(((float) i / numTestEntities) * 100 + "%");
+		}
+	}
+
+	public void update() {
+		camControl.update();
+		world.update();
+		camera.update();
 	}
 
 	@Override
 	public void render() {
+		update();
+
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		camControl.update();
-		world.update();
-		camera.update();
 
 		world.render();
 
 		batch.begin();
-		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(),
+				10, Gdx.graphics.getHeight() - 10);
 		batch.end();
 	}
 	

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.jahbz.wood.world.World;
 
-public abstract class Entity {
+public abstract class Entity implements Comparable<Entity> {
     protected float x, y;
     protected int width, height;
 
@@ -77,5 +77,13 @@ public abstract class Entity {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public boolean collidesWith(Entity e) {
+        return bounds.overlaps(e.getBounds());
+    }
+
+    public boolean collidesWith(Rectangle bounds) {
+        return bounds.overlaps(bounds);
     }
 }

@@ -1,7 +1,7 @@
 package com.jahbz.wood.world.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jahbz.wood.core.SpriteSheet;
 import com.jahbz.wood.world.World;
 
 public abstract class Mob extends Entity {
@@ -14,6 +14,7 @@ public abstract class Mob extends Entity {
     protected float maxHitPoints;
     protected float hitPoints;
 
+    private static final float DEFAULT_SPEED = 0.25f;
     protected float movementSpeed = 1;
     private int movingDir = 1;
     protected boolean moving;
@@ -33,33 +34,53 @@ public abstract class Mob extends Entity {
 
     @Override
     public void update() {
-        move();
+        tick();
+        //noinspection AssignmentUsedAsCondition
+        if (moving = x != targetX || y != targetY) move();
         bounds.setPosition(x, y);
     }
 
     private void move() {
-
+        float newY;
+        float newX;
+        switch (movingDir) {
+            case UP:
+                newY = y + DEFAULT_SPEED * movementSpeed;
+                y = Math.min(newY, targetY);
+                break;
+            case DOWN:
+                newY = y - DEFAULT_SPEED * movementSpeed;
+                y = Math.max(newY, targetY);
+                break;
+            case RIGHT:
+                newX = x + DEFAULT_SPEED * movementSpeed;
+                x = Math.min(newX, targetX);
+                break;
+            case LEFT:
+                newX = x - DEFAULT_SPEED * movementSpeed;
+                x = Math.max(newX, targetX);
+                break;
+        }
     }
 
     protected void move(int dir) {
-        int delta = dir == UP || dir == RIGHT ? 1 : -1;
+        move(dir, 1);
+    }
+
+    protected void move(int dir, int distance) {
+        int delta = dir == UP || dir == RIGHT ? distance : -distance;
 
         if (dir < 2)
-            targetY = (((int) y >> World.TILE_SHIFT) + delta) << World.TILE_SHIFT;
+            targetY = (((int) y >> SpriteSheet.TILE_SHIFT) + delta) << SpriteSheet.TILE_SHIFT;
         else
-            targetX = (((int) x >> World.TILE_SHIFT) + delta) << World.TILE_SHIFT;
+            targetX = (((int) x >> SpriteSheet.TILE_SHIFT) + delta) << SpriteSheet.TILE_SHIFT;
 
-        if (world.getTile((int) targetX >> World.TILE_SHIFT, (int) targetY >> World.TILE_SHIFT).isSolid()) {
+        if (world.getTile((int) targetX >> SpriteSheet.TILE_SHIFT, (int) targetY >> SpriteSheet.TILE_SHIFT).isSolid()) {
             targetX = x;
             targetY = y;
         }
 
         movingDir = dir;
-    }
-
-    @Override
-    public void render(SpriteBatch batch) {
-        // Maybe do animation stuff in yet another abstract subclass? (i.e. dont override here)
     }
 
     public void damage(float amt, Mob source) {
