@@ -1,7 +1,7 @@
 package com.jahbz.wood.world.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.jahbz.wood.core.SpriteSheet;
+import com.jahbz.wood.resourcing.SpriteSheet;
 import com.jahbz.wood.world.World;
 
 public abstract class Mob extends Entity {

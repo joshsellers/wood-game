@@ -6,13 +6,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jahbz.wood.resourcing.AssetCreator;
+import com.jahbz.wood.resourcing.MobAssetData;
+import com.jahbz.wood.resourcing.SpriteSheet;
 import com.jahbz.wood.world.World;
 import com.jahbz.wood.world.entities.TestMob;
 
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.1";
+	public static final String VERSION = "0.1.3";
 
 	private static final float VIEWPORT_SCALE = 3;
 
@@ -39,10 +42,12 @@ public class Main extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(camControl);
 
 		font = new BitmapFont();
+		//font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		batch = new SpriteBatch();
 
 		world = new World(camera);
 
+		AssetCreator.createAssets(MobAssetData.TEST_MOB);
 		int numTestEntities = 15;
 		long startTime = System.currentTimeMillis();
 		long totalElapsedTime = 0;

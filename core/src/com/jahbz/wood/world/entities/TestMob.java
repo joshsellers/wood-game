@@ -1,6 +1,7 @@
 package com.jahbz.wood.world.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jahbz.wood.resourcing.MobAssetData;
 import com.jahbz.wood.world.World;
 
 import static com.jahbz.wood.core.Utility.random;
@@ -8,9 +9,7 @@ import static com.jahbz.wood.core.Utility.random;
 public class TestMob extends AnimatedMob {
 
     public TestMob(float x, float y, World world) {
-        super(0x00, x, y, 16, 32, 50,
-                1, 2, 8, 25,
-                0, 27, 8,0.075f, world);
+        super(0x00, x, y, 16, 32, 50,world);
         movementSpeed = 2;
     }
 

@@ -2,7 +2,7 @@ package com.jahbz.wood.world.tiles;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.jahbz.wood.core.SpriteSheet;
+import com.jahbz.wood.resourcing.SpriteSheet;
 
 public class TileType extends StaticTiledMapTile {
     public final static int NUM_TILE_TYPES = 6;

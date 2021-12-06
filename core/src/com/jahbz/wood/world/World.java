@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.jahbz.wood.core.SpriteSheet;
+import com.jahbz.wood.resourcing.SpriteSheet;
 import com.jahbz.wood.world.entities.Entity;
 import com.jahbz.wood.world.tiles.TileType;
 

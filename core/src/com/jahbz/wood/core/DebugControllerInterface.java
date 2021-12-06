@@ -7,6 +7,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.jahbz.wood.gamepad.GamePadCode;
+import com.jahbz.wood.resourcing.SpriteSheet;
 import com.jahbz.wood.world.World;
 
 public class DebugControllerInterface implements ControllerListener, InputProcessor {
