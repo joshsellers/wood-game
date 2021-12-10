@@ -15,7 +15,7 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.3.5";
+	public static final String VERSION = "0.1.4";
 
 	private static final float VIEWPORT_SCALE = 3;
 
