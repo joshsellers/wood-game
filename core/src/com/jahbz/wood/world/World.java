@@ -39,8 +39,7 @@ public class World {
 
     public void update() {
         for (Entity e : getEntities()) {
-            if (e.isActive())
-                e.update();
+            if (e.isActive()) e.update();
         }
 
         try {

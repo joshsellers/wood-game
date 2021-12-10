@@ -15,11 +15,11 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.3";
+	public static final String VERSION = "0.1.3.5";
 
 	private static final float VIEWPORT_SCALE = 3;
 
-	private boolean debug = true;
+	private static final boolean DEBUG = true;
 
 	private SpriteBatch batch;
 
@@ -48,7 +48,7 @@ public class Main extends ApplicationAdapter {
 		world = new World(camera);
 
 		AssetCreator.createAssets(MobAssetData.TEST_MOB);
-		int numTestEntities = 15;
+		int numTestEntities = 25;
 		long startTime = System.currentTimeMillis();
 		long totalElapsedTime = 0;
 		for (int i = 0; i < numTestEntities; i++) {
@@ -56,7 +56,7 @@ public class Main extends ApplicationAdapter {
 			int wh = World.MAP_HEIGHT;
 			world.addEntity(new TestMob(random(0, ww) << SpriteSheet.TILE_SHIFT,
 					random(0, wh) << SpriteSheet.TILE_SHIFT, world));
-			if (debug) {
+			if (DEBUG) {
 				long stopTime = System.currentTimeMillis();
 				System.out.printf("%.1f%%", (float) (i + 1) / numTestEntities * 100);
 
