@@ -1,6 +1,7 @@
 package com.jahbz.wood.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,28 +12,54 @@ public class UIProfile {
 
     private final List<UIComponent> components = new ArrayList<>();
 
-    private final String id;
+    private final String handle;
 
-    private int selectionIndex;
+    private int currentSelectionIndex;
+    private int gridWidth;
+    private int gridHeight;
     private /*final*/ int numSelectionIndices;
 
-    public UIProfile(String configFile) {
-                                                        //this might not work watch out
-        id = configFile.split("/")[1].split("\\.")[0];
+    private final UIHandler handler;
 
+    public UIProfile(String handle, UIHandler handler) {
+        this.handler = handler;
+        this.handle = handle;
+        FileHandle configFile = Gdx.files.internal("uiconfigs/" + handle + ".uiconfig");
+        String rawConfigData = configFile.readString();
+        String[] configEntries = rawConfigData.split("\n");
+
+        String[] gridData = configEntries[0].split(",");
+        gridWidth = Integer.parseInt(gridData[0]);
+        gridHeight = Integer.parseInt(gridData[1]);
+
+        for (int i = 1; i < configEntries.length; i++) {
+            String entryHeader = configEntries[i].split(":")[0].toUpperCase();
+            switch (entryHeader) {
+                case "BUTTON":
+                    //add button
+                    break;
+                case "LABEL":
+                    //add label;
+                    break;
+            }
+        }
     }
 
-    public void setSelectionIndex(int index) {
-        selectionIndex = index < numSelectionIndices ? Math.max(index, 0) : numSelectionIndices - 1;
+    public void setCurrentSelectionIndex(int index) {
+        currentSelectionIndex = index < numSelectionIndices ? Math.max(index, 0) : numSelectionIndices - 1;
         for (UIComponent component : getComponents()) {
-            if (component.isSelectable() && !component.isSelected() && component.getSelectionIndex() == selectionIndex)
+            if (component.isSelectable() && !component.isSelected() && component.getSelectionIndex() == currentSelectionIndex)
                 component.select();
             else if (component.isSelected()) component.deselect();
         }
     }
 
-    public int getSelectionIndex() {
-        return selectionIndex;
+    public int getNumSelectionIndices() {
+        return numSelectionIndices;
+    }
+
+    public int getCurrentSelectionIndex() {
+        return currentSelectionIndex;
     }
 
     public synchronized List<UIComponent> getComponents() {
@@ -43,8 +70,8 @@ public class UIProfile {
         getComponents().add(component);
     }
 
-    public String getId() {
-        return id;
+    public String getHandle() {
+        return handle;
     }
 
     public void open() {
@@ -61,5 +88,17 @@ public class UIProfile {
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public UIHandler getHandler() {
+        return handler;
+    }
+
+    public int getGridWidth() {
+        return gridWidth;
+    }
+
+    public int getGridHeight() {
+        return gridHeight;
     }
 }

@@ -1,0 +1,3 @@
+columns,rows
+button:buttonId,buttonLabelText,dispX,dispY,width,height,indexX,indexY,toggleable,defaulttogglestate
+label:labelText,dispX,dispY,textcolor,bgcolor

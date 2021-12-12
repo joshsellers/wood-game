@@ -9,13 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jahbz.wood.resourcing.AssetCreator;
 import com.jahbz.wood.resourcing.MobAssetData;
 import com.jahbz.wood.resourcing.SpriteSheet;
+import com.jahbz.wood.ui.UIHandler;
+import com.jahbz.wood.ui.UIProfile;
 import com.jahbz.wood.world.World;
 import com.jahbz.wood.world.entities.TestMob;
 
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.4";
+	public static final String VERSION = "0.1.4.5";
 
 	private static final float VIEWPORT_SCALE = 3;
 
@@ -29,6 +31,8 @@ public class Main extends ApplicationAdapter {
 	private BitmapFont font;
 
 	private World world;
+	
+	private UIHandler ui;
 
 	@Override
 	public void create() {
@@ -69,6 +73,8 @@ public class Main extends ApplicationAdapter {
 				startTime = System.currentTimeMillis();
 			}
 		}
+		
+		ui = new UIHandler();
 	}
 
 	public void update() {
@@ -84,6 +90,7 @@ public class Main extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		world.render();
+		ui.render();
 
 		batch.begin();
 		font.draw(batch, "v" + VERSION, 10, Gdx.graphics.getHeight() - 10);

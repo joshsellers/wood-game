@@ -2,9 +2,10 @@ package com.jahbz.wood.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class UIComponent {
-    protected boolean visible;
+    private boolean visible;
 
     private final boolean selectable;
     private boolean selected;
@@ -17,7 +18,10 @@ public abstract class UIComponent {
 
     private final UIProfile profile;
 
-    protected Texture texture;
+    private final Rectangle bounds;
+
+    protected Texture primaryTexture;
+    protected Texture selectedTexture;
 
     public UIComponent(String id, float x, float y, float width, float height, boolean selectable, int selectionIndex,
                        UIProfile profile) {
@@ -30,14 +34,14 @@ public abstract class UIComponent {
         this.selectable = selectable;
         this.selectionIndex = selectionIndex;
 
-        texture = createTexture();
+        bounds = new Rectangle(x, y, width, height);
+
+        Texture[] textures = createTextures();
+        primaryTexture = textures[0];
+        selectedTexture = textures[1];
     }
 
-    public abstract Texture createTexture();
-
-    public Texture getTexture() {
-        return texture;
-    }
+    public abstract Texture[] createTextures();
 
     public abstract void draw(SpriteBatch batch);
 
@@ -104,5 +108,9 @@ public abstract class UIComponent {
 
     public float getHeight() {
         return height;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }
