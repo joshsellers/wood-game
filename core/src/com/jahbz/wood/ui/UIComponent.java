@@ -22,6 +22,7 @@ public abstract class UIComponent {
 
     protected Texture primaryTexture;
     protected Texture selectedTexture;
+    protected Texture currentTexture;
 
     public UIComponent(String id, float x, float y, float width, float height, boolean selectable, int selectionIndex,
                        UIProfile profile) {
@@ -39,6 +40,7 @@ public abstract class UIComponent {
         Texture[] textures = createTextures();
         primaryTexture = textures[0];
         selectedTexture = textures[1];
+        currentTexture = primaryTexture;
     }
 
     public abstract Texture[] createTextures();
@@ -54,6 +56,7 @@ public abstract class UIComponent {
 
     public void deselect() {
         selected = false;
+        if (isSelectable()) onDeselect();
     }
 
     public boolean isSelected() {
@@ -81,6 +84,8 @@ public abstract class UIComponent {
     }
 
     protected abstract void onSelect();
+
+    protected abstract void onDeselect();
 
     public abstract void onCursorDown();
 

@@ -13,6 +13,8 @@ public class DesktopLauncher {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		config.width = screenSize.width;
 		config.height = screenSize.height;
+		Main.WIDTH = config.width;
+		Main.HEIGHT = config.height;
 		//config.addIcon("sprite_sheet.png", Files.FileType.Internal);
 		config.y -= 2;
 		//config.fullscreen = true;

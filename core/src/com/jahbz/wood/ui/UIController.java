@@ -1,20 +1,24 @@
 package com.jahbz.wood.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
+import com.jahbz.wood.core.Main;
 import com.jahbz.wood.gamepad.GamePadCode;
 
 public class UIController implements ControllerListener, InputProcessor {
-    public final static float DEAD_ZONE = 0.3f;
+    public final static float DEAD_ZONE = 0.5f;
 
     public final static int JOYSTICK_CENTERED = -1;
     public final static int JOYSTICK_UP = 0;
     public final static int JOYSTICK_DOWN = 1;
     public final static int JOYSTICK_LEFT = 2;
     public final static int JOYSTICK_RIGHT = 3;
+
+    public static float MOUSE_SCALE = 1;
 
     private final UIHandler handler;
 
@@ -25,11 +29,13 @@ public class UIController implements ControllerListener, InputProcessor {
 
     public UIController(UIHandler handler) {
         this.handler = handler;
+        this.handler.controller = this;
 
         for (Controller controller : Controllers.getControllers()) {
             controllerConnected = true;
             Gdx.app.log("UIController", controller.getName());
             gamePad = controller;
+            Gdx.input.setCursorCatched(true);
             break;
         }
 
@@ -41,7 +47,8 @@ public class UIController implements ControllerListener, InputProcessor {
     }
 
     public void update() {
-        if (isControllerConnected()) {
+        //this needs to be a little more complicated. or not used at all.
+        /*if (isControllerConnected()) {
             float joyX = gamePad.getAxis(GamePadCode.LEFT_STICK_X.getCode());
             float joyY = gamePad.getAxis(GamePadCode.LEFT_STICK_Y.getCode());
             boolean deadZoned = joyX > -DEAD_ZONE && joyX < DEAD_ZONE &&
@@ -59,7 +66,7 @@ public class UIController implements ControllerListener, InputProcessor {
 
             if (joyStickDirection != JOYSTICK_CENTERED)
                 handler.moveCursor(joyStickDirection);
-        }
+        }*/
     }
 
     public int getJoyStickDirection() {
@@ -73,6 +80,15 @@ public class UIController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.P && !handler.getProfile("test2").isOpen()) {
+            handler.openProfile("test2");
+        } else if (keycode == Input.Keys.P)
+            handler.closeProfile("test2");
+
+        if (keycode == Input.Keys.ESCAPE && !handler.getProfile("pausemenu").isOpen())
+            handler.openProfile("pausemenu");
+        else if (keycode == Input.Keys.ESCAPE)
+            handler.closeProfile("pausemenu");
         return false;
     }
 
@@ -83,19 +99,19 @@ public class UIController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        for (UIComponent component : handler.getCurrentProfile().getComponents()) {
-            if (component.isVisible() && component.isSelected())
-                component.onCursorDown();
-        }
+        Gdx.input.setCursorCatched(false);
+
+        UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+        if (selectedComponent.isVisible() && selectedComponent.isSelected())
+            selectedComponent.onCursorDown();
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        for (UIComponent component : handler.getCurrentProfile().getComponents()) {
-            if (component.isVisible() && component.isSelected())
-                component.onCursorUp();
-        }
+        UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+        if (selectedComponent.isVisible() && selectedComponent.isSelected())
+            selectedComponent.onCursorUp();
         return false;
     }
 
@@ -106,7 +122,9 @@ public class UIController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        handler.updateMousePosition(screenX, screenY);
+        Gdx.input.setCursorCatched(false);
+        handler.updateMousePosition((int) (screenX * MOUSE_SCALE),
+                (int) ((Gdx.graphics.getHeight() - screenY) * MOUSE_SCALE));
         return false;
     }
 
@@ -127,12 +145,14 @@ public class UIController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
+        Gdx.input.setCursorCatched(true);
+
         if (buttonCode == GamePadCode.A_BUTTON.getCode()) {
-            for (UIComponent component : handler.getCurrentProfile().getComponents()) {
-                if (component.isVisible() && component.isSelected())
-                    component.onCursorDown();
-            }
+            UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+            if (selectedComponent.isVisible() && selectedComponent.isSelected())
+                selectedComponent.onCursorDown();
         }
+
 
         return false;
     }
@@ -141,10 +161,9 @@ public class UIController implements ControllerListener, InputProcessor {
     public boolean buttonUp(Controller controller, int buttonCode) {
         switch (GamePadCode.BUTTON_CODES[buttonCode]) {
             case A_BUTTON:
-                for (UIComponent component : handler.getCurrentProfile().getComponents()) {
-                    if (component.isVisible() && component.isSelected())
-                        component.onCursorUp();
-                }
+                UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+                if (selectedComponent.isVisible() && selectedComponent.isSelected())
+                    selectedComponent.onCursorUp();
                 break;
             case DPAD_UP:
                 handler.moveCursor(JOYSTICK_UP);
@@ -158,12 +177,19 @@ public class UIController implements ControllerListener, InputProcessor {
             case DPAD_RIGHT:
                 handler.moveCursor(JOYSTICK_RIGHT);
                 break;
+            case PAUSE_BUTTON:
+                if (!handler.getProfile("pausemenu").isOpen())
+                    handler.openProfile("pausemenu");
+                else handler.closeProfile("pausemenu");
+                break;
         }
+
         return false;
     }
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
+        Gdx.input.setCursorCatched(true);
         return false;
     }
 

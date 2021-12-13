@@ -1,0 +1,7 @@
+3,2
+button:yesButton,YES_PLEASE, 200, 200, 100, 100, 0, 0, false, false
+button:noButton, NO,         304, 200, 100, 100, 1, 0, false, false
+button:otherButton,OTHERNO,  408, 200, 100, 100, 2, 0, false, false
+button:2yesButton,YES,       200, 304, 100, 100, 0, 1, false, false
+button:2noButton,NO,         304, 304, 100, 100, 1, 1, false, false
+//button:2otherButton,OTHERNO, 408, 304, 100, 100, 2, 1, false, false

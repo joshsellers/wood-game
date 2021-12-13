@@ -2,13 +2,17 @@ package com.jahbz.wood.core;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.jahbz.wood.resourcing.AssetCreator;
 import com.jahbz.wood.resourcing.MobAssetData;
 import com.jahbz.wood.resourcing.SpriteSheet;
+import com.jahbz.wood.ui.UIController;
 import com.jahbz.wood.ui.UIHandler;
 import com.jahbz.wood.ui.UIProfile;
 import com.jahbz.wood.world.World;
@@ -17,11 +21,15 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.4.5";
+	public static final String VERSION = "0.1.5";
 
 	private static final float VIEWPORT_SCALE = 3;
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
+
+	public static int WIDTH;
+	public static int HEIGHT;
+	public static boolean FULLSCREEN = false;
 
 	private SpriteBatch batch;
 
@@ -33,6 +41,7 @@ public class Main extends ApplicationAdapter {
 	private World world;
 	
 	private UIHandler ui;
+	private UIController uiControl;
 
 	@Override
 	public void create() {
@@ -42,11 +51,17 @@ public class Main extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w / VIEWPORT_SCALE, h / VIEWPORT_SCALE);
 
-		camControl = new DebugControllerInterface(camera);
-		Gdx.input.setInputProcessor(camControl);
+		InputMultiplexer multiIn = new InputMultiplexer();
 
-		font = new BitmapFont();
-		//font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		camControl = new DebugControllerInterface(camera);
+		multiIn.addProcessor(camControl);
+
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/HATTEN.TTF"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 24;
+		font = generator.generateFont(parameter);
+		generator.dispose();
+
 		batch = new SpriteBatch();
 
 		world = new World(camera);
@@ -75,10 +90,20 @@ public class Main extends ApplicationAdapter {
 		}
 		
 		ui = new UIHandler();
+		UIProfile testProfile = new UIProfile("test2", ui);
+		ui.addProfile(testProfile);
+		UIProfile pauseMenuProfile = new UIProfile("pausemenu", ui);
+		ui.addProfile(pauseMenuProfile);
+
+		uiControl = new UIController(ui);
+		multiIn.addProcessor(uiControl);
+
+		Gdx.input.setInputProcessor(multiIn);
 	}
 
 	public void update() {
 		camControl.update();
+		uiControl.update();
 		world.update();
 		camera.update();
 	}
@@ -93,9 +118,9 @@ public class Main extends ApplicationAdapter {
 		ui.render();
 
 		batch.begin();
-		font.draw(batch, "v" + VERSION, 10, Gdx.graphics.getHeight() - 10);
+		font.draw(batch, "v" + VERSION, 10, 50);
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(),
-				10, Gdx.graphics.getHeight() - 30);
+				10, 25);
 		batch.end();
 	}
 	

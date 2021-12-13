@@ -25,7 +25,6 @@ public class DebugControllerInterface implements ControllerListener, InputProces
             controllerConnected = true;
             Gdx.app.log("CameraController", controller.getName());
             gamePad = controller;
-            Gdx.input.setCursorCatched(true);
             break;
         }
 
@@ -66,13 +65,11 @@ public class DebugControllerInterface implements ControllerListener, InputProces
 
     @Override
     public void connected(Controller controller) {
-        Gdx.input.setCursorCatched(true);
         controllerConnected = true;
     }
 
     @Override
     public void disconnected(Controller controller) {
-        Gdx.input.setCursorCatched(false);
         controllerConnected = false;
     }
 
@@ -80,10 +77,6 @@ public class DebugControllerInterface implements ControllerListener, InputProces
     public boolean buttonDown(Controller controller, int buttonCode) {
         Gdx.app.log("CameraController", GamePadCode.BUTTON_CODES[buttonCode] + " (" + buttonCode + ")");
 
-        switch (GamePadCode.BUTTON_CODES[buttonCode]) {
-            case PAUSE_BUTTON:
-                Gdx.app.exit();
-        }
         return false;
     }
 
@@ -95,8 +88,6 @@ public class DebugControllerInterface implements ControllerListener, InputProces
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
         Gdx.app.log("CameraController", GamePadCode.AXIS_CODES[axisCode] + " (" + axisCode + ")");
-
-        Gdx.input.setCursorCatched(true);
         return false;
     }
 
@@ -118,7 +109,6 @@ public class DebugControllerInterface implements ControllerListener, InputProces
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == 111) Gdx.app.exit();
         return false;
     }
 
@@ -149,7 +139,6 @@ public class DebugControllerInterface implements ControllerListener, InputProces
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Gdx.input.setCursorCatched(false);
         return false;
     }
 

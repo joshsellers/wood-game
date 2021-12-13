@@ -15,9 +15,9 @@ public class UIProfile {
     private final String handle;
 
     private int currentSelectionIndex;
-    private int gridWidth;
-    private int gridHeight;
-    private /*final*/ int numSelectionIndices;
+    private final int gridWidth;
+    private final int gridHeight;
+    private final int numSelectionIndices;
 
     private final UIHandler handler;
 
@@ -27,16 +27,37 @@ public class UIProfile {
         FileHandle configFile = Gdx.files.internal("uiconfigs/" + handle + ".uiconfig");
         String rawConfigData = configFile.readString();
         String[] configEntries = rawConfigData.split("\n");
+        for (int i = 0; i < configEntries.length; i++)
+            configEntries[i] = configEntries[i].replaceAll("\\s", "");;
 
         String[] gridData = configEntries[0].split(",");
         gridWidth = Integer.parseInt(gridData[0]);
-        gridHeight = Integer.parseInt(gridData[1]);
+        gridHeight = Integer.parseInt(gridData[1].trim());
+        numSelectionIndices = gridWidth * gridHeight;
 
         for (int i = 1; i < configEntries.length; i++) {
-            String entryHeader = configEntries[i].split(":")[0].toUpperCase();
+            if (configEntries[i].startsWith("//")) continue;
+            String[] entry = configEntries[i].split(":");
+            String entryHeader = entry[0].toUpperCase();
+
+            String[] entryData = entry[1].split(",");
             switch (entryHeader) {
                 case "BUTTON":
-                    //add button
+                    String id = entryData[0];
+                    String labelText = entryData[1].replace("_", " ");
+                    float dispX = Integer.parseInt(entryData[2]);
+                    float dispY = Integer.parseInt(entryData[3]);
+                    float width = Integer.parseInt(entryData[4]);
+                    float height = Integer.parseInt(entryData[5]);
+                    int indexX = Integer.parseInt(entryData[6]);
+                    int indexY = Integer.parseInt(entryData[7]);
+                    boolean toggleable = Boolean.parseBoolean(entryData[8]);
+                    boolean defaultToggleState = Boolean.parseBoolean(entryData[9]);
+
+                    UIButton button = new UIButton(id, labelText, toggleable,
+                            defaultToggleState,dispX, dispY, width, height,
+                            indexX + indexY * gridWidth, this);
+                    addComponent(button);
                     break;
                 case "LABEL":
                     //add label;
@@ -45,12 +66,22 @@ public class UIProfile {
         }
     }
 
+    public UIComponent getSelectedComponent() {
+        return getComponent(getCurrentSelectionIndex());
+    }
+
+    public UIComponent getComponent(int index) {
+        return getComponents().get(index);
+    }
+
     public void setCurrentSelectionIndex(int index) {
         currentSelectionIndex = index < numSelectionIndices ? Math.max(index, 0) : numSelectionIndices - 1;
         for (UIComponent component : getComponents()) {
-            if (component.isSelectable() && !component.isSelected() && component.getSelectionIndex() == currentSelectionIndex)
+            if (component.isSelectable() && !component.isSelected() &&
+                    component.getSelectionIndex() == currentSelectionIndex) {
                 component.select();
-            else if (component.isSelected()) component.deselect();
+            } else if (component.isSelected() && component.getSelectionIndex() != currentSelectionIndex)
+                component.deselect();
         }
     }
 
