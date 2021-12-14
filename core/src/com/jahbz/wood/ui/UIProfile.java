@@ -47,8 +47,18 @@ public class UIProfile {
                     String labelText = entryData[1].replace("_", " ");
                     float dispX = Integer.parseInt(entryData[2]);
                     float dispY = Integer.parseInt(entryData[3]);
-                    float width = Integer.parseInt(entryData[4]);
-                    float height = Integer.parseInt(entryData[5]);
+                    float width;
+                    if (entryData[4].equalsIgnoreCase("labelwidth")) {
+                        handler.fontLayout.setText(handler.getButtonFont(), labelText);
+                        width = handler.fontLayout.width + UIButton.LABEL_PADDING * 2;
+                    } else
+                        width = Integer.parseInt(entryData[4]);
+                    float height;
+                    if (entryData[5].equalsIgnoreCase("labelheight")) {
+                        handler.fontLayout.setText(handler.getButtonFont(), labelText);
+                        height = handler.fontLayout.height * 2 + UIButton.LABEL_PADDING;
+                    } else
+                        height = Integer.parseInt(entryData[5]);
                     int indexX = Integer.parseInt(entryData[6]);
                     int indexY = Integer.parseInt(entryData[7]);
                     boolean toggleable = Boolean.parseBoolean(entryData[8]);

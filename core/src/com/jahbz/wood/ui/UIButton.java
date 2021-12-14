@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class UIButton extends UIComponent {
 
-    private final static int BUTTON_PADDING = 5;
+    public final static int EDGE_PADDING = 5;
+    public final static int LABEL_PADDING = 10;
 
     private final String label;
     private final boolean toggleable;
@@ -39,9 +40,9 @@ public class UIButton extends UIComponent {
         selectedPixmap.setColor(0x0000FFFF);
         selectedPixmap.fillRectangle(0, 0, primaryPixmap.getWidth(), primaryPixmap.getHeight());
         selectedPixmap.setColor(0x000099FF);
-        selectedPixmap.fillRectangle(BUTTON_PADDING, BUTTON_PADDING,
-                selectedPixmap.getWidth() - BUTTON_PADDING * 2,
-                selectedPixmap.getHeight() - BUTTON_PADDING * 2);
+        selectedPixmap.fillRectangle(EDGE_PADDING, EDGE_PADDING,
+                selectedPixmap.getWidth() - EDGE_PADDING * 2,
+                selectedPixmap.getHeight() - EDGE_PADDING * 2);
 
         Pixmap pressedPixmap = new Pixmap((int) getWidth(), (int) getHeight(),
                 Pixmap.Format.RGBA8888);
@@ -90,7 +91,8 @@ public class UIButton extends UIComponent {
         batch.draw(currentTexture, x, y);
         if (isToggleable()) batch.draw(isToggled() ? onTexture : offTexture, x + getWidth() + 5,
                 y + (getHeight() / 2) - (float)  (onTexture.getHeight() / 2));
-        getProfile().getHandler().getButtonFont().draw(batch, label, x + 10, y + 26);
+        getProfile().getHandler().getButtonFont().draw(batch, label, x + LABEL_PADDING,
+                y + (float) EDGE_PADDING * LABEL_PADDING / 2 + 1);
     }
 
     @Override

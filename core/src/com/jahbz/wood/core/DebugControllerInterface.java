@@ -75,7 +75,7 @@ public class DebugControllerInterface implements ControllerListener, InputProces
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        Gdx.app.log("CameraController", GamePadCode.BUTTON_CODES[buttonCode] + " (" + buttonCode + ")");
+        //Gdx.app.log("CameraController", GamePadCode.BUTTON_CODES[buttonCode] + " (" + buttonCode + ")");
 
         return false;
     }
@@ -87,7 +87,7 @@ public class DebugControllerInterface implements ControllerListener, InputProces
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
-        Gdx.app.log("CameraController", GamePadCode.AXIS_CODES[axisCode] + " (" + axisCode + ")");
+        //Gdx.app.log("CameraController", GamePadCode.AXIS_CODES[axisCode] + " (" + axisCode + ")");
         return false;
     }
 

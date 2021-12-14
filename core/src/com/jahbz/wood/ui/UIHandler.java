@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.jahbz.wood.core.Main;
@@ -26,6 +27,8 @@ public class UIHandler {
     private int mx, my;
 
     protected UIController controller;
+
+    protected GlyphLayout fontLayout = new GlyphLayout();
 
     public UIHandler() {
         batch = new SpriteBatch();
@@ -71,10 +74,8 @@ public class UIHandler {
                 }
                 else {
                     Gdx.graphics.setFullscreenMode(currentMode);
-                    MOUSE_SCALE = (float) currentMode.width / Main.WIDTH;
-                    System.out.println(currentMode.width + " " + Main.WIDTH);
+                    MOUSE_SCALE = (float) Main.WIDTH / currentMode.width;
                 }
-
                 break;
         }
     }
@@ -89,10 +90,10 @@ public class UIHandler {
 
                 switch (direction) {
                     case JOYSTICK_UP:
-                        y++;
+                        y--;
                         break;
                     case JOYSTICK_DOWN:
-                        y--;
+                        y++;
                         break;
                     case JOYSTICK_LEFT:
                         x--;
@@ -102,7 +103,8 @@ public class UIHandler {
                         break;
                 }
 
-                currentProfile.setCurrentSelectionIndex(x + y * gridSideLength);
+                if (x + y * currentProfile.getGridWidth() < currentProfile.getComponents().size())
+                    currentProfile.setCurrentSelectionIndex(x + y * gridSideLength);
             }
         }
     }
