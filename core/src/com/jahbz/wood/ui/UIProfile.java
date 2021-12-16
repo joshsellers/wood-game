@@ -2,6 +2,7 @@ package com.jahbz.wood.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.jahbz.wood.core.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,15 @@ public class UIProfile {
                     String id = entryData[0];
                     String labelText = entryData[1].replace("_", " ");
                     float dispX = Integer.parseInt(entryData[2]);
-                    float dispY = Integer.parseInt(entryData[3]);
+                    float dispY;
+                    if (entryData[3].contains("top")) {
+                        dispY = Main.HEIGHT;
+                        if (entryData[3].contains("-")) {
+                            String[] operands = entryData[3].split("-");
+                            dispY -= Integer.parseInt(operands[1]);
+                        }
+                    } else
+                        dispY = Integer.parseInt(entryData[3]);
                     float width;
                     if (entryData[4].equalsIgnoreCase("labelwidth")) {
                         handler.fontLayout.setText(handler.getButtonFont(), labelText);
