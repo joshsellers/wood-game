@@ -16,19 +16,47 @@ public class UIProfile {
     private final String handle;
 
     private int currentSelectionIndex;
-    private final int gridWidth;
-    private final int gridHeight;
-    private final int numSelectionIndices;
+    private int gridWidth;
+    private int gridHeight;
+    private int numSelectionIndices;
     private int numSelectables = 0;
 
     private final UIHandler handler;
 
-    private final int keyBinding;
-    private final int buttonBinding;
+    private int keyBinding;
+    private int buttonBinding;
 
     public UIProfile(String handle, UIHandler handler) {
         this.handler = handler;
         this.handle = handle;
+        processConfigFile(handle);
+    }
+
+    private int parseDisplayCoordinate(String rawCoordinate, int compWidth, int compHeight) {
+        int coordinate = 0;
+        if (rawCoordinate.contains("top"))
+            coordinate = Main.HEIGHT;
+        else if (rawCoordinate.contains("edge"))
+            coordinate = Main.WIDTH;
+        else if (rawCoordinate.contains("centery"))
+            coordinate = Main.HEIGHT / 2 - compHeight / 2;
+        else if (rawCoordinate.contains("centerx"))
+            coordinate = Main.WIDTH / 2 - compWidth / 2;
+
+        if (rawCoordinate.contains("-")) {
+            String[] operands = rawCoordinate.split("-");
+            coordinate -= Integer.parseInt(operands[1]);
+            return coordinate;
+        } else if (rawCoordinate.contains("+")) {
+            String[] operands = rawCoordinate.split("\\+");
+            coordinate += Integer.parseInt(operands[1]);
+            return coordinate;
+        }
+
+        return coordinate == 0 ? Integer.parseInt(rawCoordinate) : coordinate;
+    }
+
+    private void processConfigFile(String handle) {
         FileHandle configFile = Gdx.files.internal("uiconfigs/" + handle + ".uiconfig");
         String rawConfigData = configFile.readString();
         String[] configEntries = rawConfigData.split("\n");
@@ -55,16 +83,7 @@ public class UIProfile {
                     numSelectables++;
                     String id = entryData[0];
                     String labelText = entryData[1].replace("_", " ");
-                    float dispX = Integer.parseInt(entryData[2]);
-                    float dispY;
-                    if (entryData[3].contains("top")) {
-                        dispY = Main.HEIGHT;
-                        if (entryData[3].contains("-")) {
-                            String[] operands = entryData[3].split("-");
-                            dispY -= Integer.parseInt(operands[1]);
-                        }
-                    } else
-                        dispY = Integer.parseInt(entryData[3]);
+
                     float width;
                     if (entryData[4].equalsIgnoreCase("labelwidth")) {
                         handler.fontLayout.setText(handler.getButtonFont(), labelText);
@@ -77,6 +96,12 @@ public class UIProfile {
                         height = handler.fontLayout.height * 2 + UIButton.LABEL_PADDING;
                     } else
                         height = Integer.parseInt(entryData[5]);
+
+                    int dispX = parseDisplayCoordinate(entryData[2], (int) width,
+                            (int) height);
+                    int dispY = parseDisplayCoordinate(entryData[3], (int) width,
+                            (int) height);
+
                     int indexX = Integer.parseInt(entryData[6]);
                     int indexY = Integer.parseInt(entryData[7]);
                     boolean toggleable = Boolean.parseBoolean(entryData[8]);

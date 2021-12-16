@@ -3,7 +3,6 @@ package com.jahbz.wood.core;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,7 +20,7 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.6";
+	public static final String VERSION = "0.1.7";
 
 	private static final float VIEWPORT_SCALE = 3;
 
@@ -97,8 +96,8 @@ public class Main extends ApplicationAdapter {
 		ui.addProfile(testProfile);
 		UIProfile pauseMenuProfile = new UIProfile("pausemenu", ui);
 		ui.addProfile(pauseMenuProfile);
-
-
+		UIProfile test3 = new UIProfile("test3", ui);
+		ui.addProfile(test3);
 
 		Gdx.input.setInputProcessor(multiIn);
 	}
