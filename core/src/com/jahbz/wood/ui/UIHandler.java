@@ -35,7 +35,7 @@ public class UIHandler {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/HATTEN.TTF"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
+        parameter.size = 14;
         parameter.color = new Color(0xFF8000FF);
         buttonFont = generator.generateFont(parameter);
         generator.dispose();

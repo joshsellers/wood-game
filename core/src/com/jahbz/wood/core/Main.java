@@ -20,9 +20,9 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.7";
+	public static final String VERSION = "0.1.8";
 
-	private static final float VIEWPORT_SCALE = 3;
+	public static final float VIEWPORT_SCALE = 1.5f;
 
 	private static final boolean DEBUG = false;
 
@@ -44,11 +44,8 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, w / VIEWPORT_SCALE, h / VIEWPORT_SCALE);
+		camera.setToOrtho(false, WIDTH / VIEWPORT_SCALE, HEIGHT / VIEWPORT_SCALE);
 
 		InputMultiplexer multiIn = new InputMultiplexer();
 

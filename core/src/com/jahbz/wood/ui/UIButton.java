@@ -92,7 +92,7 @@ public class UIButton extends UIComponent {
         if (isToggleable()) batch.draw(isToggled() ? onTexture : offTexture, x + getWidth() + 5,
                 y + (getHeight() / 2) - (float)  (onTexture.getHeight() / 2));
         getProfile().getHandler().getButtonFont().draw(batch, label, x + LABEL_PADDING,
-                y + (float) EDGE_PADDING * LABEL_PADDING / 2 + 1);
+                y + (float) EDGE_PADDING * LABEL_PADDING / 3 + 2);
     }
 
     @Override

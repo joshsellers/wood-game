@@ -11,13 +11,14 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "wood";
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		config.width = screenSize.width;
-		config.height = screenSize.height;
-		Main.WIDTH = config.width;
-		Main.HEIGHT = config.height;
-		//config.addIcon("sprite_sheet.png", Files.FileType.Internal);
+		config.width = screenSize.width / 2;
+		config.height = screenSize.height / 2;
+
+		Main.WIDTH = config.width / (int) Main.VIEWPORT_SCALE;
+		Main.HEIGHT = config.height / (int) Main.VIEWPORT_SCALE;
+
 		config.y -= 2;
-		//config.fullscreen = true;
+
 		new LwjglApplication(new Main(), config);
 	}
 }
