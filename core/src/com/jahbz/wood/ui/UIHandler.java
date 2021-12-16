@@ -89,21 +89,21 @@ public class UIHandler {
                 int y = currentProfile.getCurrentSelectionIndex() / gridSideLength;
 
                 switch (direction) {
-                    case JOYSTICK_UP:
+                    case UP:
                         y--;
                         break;
-                    case JOYSTICK_DOWN:
+                    case DOWN:
                         y++;
                         break;
-                    case JOYSTICK_LEFT:
+                    case LEFT:
                         x--;
                         break;
-                    case JOYSTICK_RIGHT:
+                    case RIGHT:
                         x++;
                         break;
                 }
 
-                if (x + y * currentProfile.getGridWidth() < currentProfile.getComponents().size())
+                if (x + y * currentProfile.getGridWidth() < currentProfile.getNumSelectables())
                     currentProfile.setCurrentSelectionIndex(x + y * gridSideLength);
             }
         }
@@ -144,6 +144,8 @@ public class UIHandler {
 
     public synchronized void addProfile(UIProfile profile) {
         getProfiles().put(profile.getHandle(), profile);
+        controller.profileKeyBindings.put(profile.getKeyBinding(), profile.getHandle());
+        controller.profileButtonBindings.put(profile.getButtonBinding(), profile.getHandle());
     }
 
     public UIProfile getProfile(String handle) {

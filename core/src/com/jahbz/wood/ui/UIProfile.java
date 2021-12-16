@@ -19,8 +19,12 @@ public class UIProfile {
     private final int gridWidth;
     private final int gridHeight;
     private final int numSelectionIndices;
+    private int numSelectables = 0;
 
     private final UIHandler handler;
+
+    private final int keyBinding;
+    private final int buttonBinding;
 
     public UIProfile(String handle, UIHandler handler) {
         this.handler = handler;
@@ -36,7 +40,11 @@ public class UIProfile {
         gridHeight = Integer.parseInt(gridData[1].trim());
         numSelectionIndices = gridWidth * gridHeight;
 
-        for (int i = 1; i < configEntries.length; i++) {
+        String[] bindings = configEntries[1].split(",");
+        keyBinding = Integer.parseInt(bindings[0]);
+        buttonBinding = Integer.parseInt(bindings[1]);
+
+        for (int i = 2; i < configEntries.length; i++) {
             if (configEntries[i].startsWith("//")) continue;
             String[] entry = configEntries[i].split(":");
             String entryHeader = entry[0].toUpperCase();
@@ -44,6 +52,7 @@ public class UIProfile {
             String[] entryData = entry[1].split(",");
             switch (entryHeader) {
                 case "BUTTON":
+                    numSelectables++;
                     String id = entryData[0];
                     String labelText = entryData[1].replace("_", " ");
                     float dispX = Integer.parseInt(entryData[2]);
@@ -150,5 +159,17 @@ public class UIProfile {
 
     public int getGridHeight() {
         return gridHeight;
+    }
+
+    public int getNumSelectables() {
+        return numSelectables;
+    }
+
+    public int getKeyBinding() {
+        return keyBinding;
+    }
+
+    public int getButtonBinding() {
+        return buttonBinding;
     }
 }

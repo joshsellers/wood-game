@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jahbz.wood.resourcing.AssetCreator;
 import com.jahbz.wood.resourcing.MobAssetData;
-import com.jahbz.wood.resourcing.SpriteSheet;
 import com.jahbz.wood.world.World;
 
 public abstract class AnimatedMob extends Mob {

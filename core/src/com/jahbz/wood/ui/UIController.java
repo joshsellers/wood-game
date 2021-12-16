@@ -6,17 +6,18 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
-import com.jahbz.wood.core.Main;
 import com.jahbz.wood.gamepad.GamePadCode;
+
+import java.util.Hashtable;
 
 public class UIController implements ControllerListener, InputProcessor {
     public final static float DEAD_ZONE = 0.5f;
 
-    public final static int JOYSTICK_CENTERED = -1;
-    public final static int JOYSTICK_UP = 0;
-    public final static int JOYSTICK_DOWN = 1;
-    public final static int JOYSTICK_LEFT = 2;
-    public final static int JOYSTICK_RIGHT = 3;
+    public final static int CENTERED = -1;
+    public final static int UP = 0;
+    public final static int DOWN = 1;
+    public final static int LEFT = 2;
+    public final static int RIGHT = 3;
 
     public static float MOUSE_SCALE = 1;
 
@@ -25,7 +26,8 @@ public class UIController implements ControllerListener, InputProcessor {
     private Controller gamePad = null;
     private boolean controllerConnected = false;
 
-    private int joyStickDirection = JOYSTICK_CENTERED;
+    protected final Hashtable<Integer, String> profileKeyBindings = new Hashtable<>();
+    protected final Hashtable<Integer, String> profileButtonBindings = new Hashtable<>();
 
     public UIController(UIHandler handler) {
         this.handler = handler;
@@ -70,7 +72,7 @@ public class UIController implements ControllerListener, InputProcessor {
     }
 
     public int getJoyStickDirection() {
-        return joyStickDirection;
+        return CENTERED;
     }
 
     @Override
@@ -80,15 +82,13 @@ public class UIController implements ControllerListener, InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.P && !handler.getProfile("test2").isOpen()) {
-            handler.openProfile("test2");
-        } else if (keycode == Input.Keys.P)
-            handler.closeProfile("test2");
-
-        if (keycode == Input.Keys.ESCAPE && !handler.getProfile("pausemenu").isOpen())
-            handler.openProfile("pausemenu");
-        else if (keycode == Input.Keys.ESCAPE)
-            handler.closeProfile("pausemenu");
+        if (profileKeyBindings.containsKey(keycode)) {
+            UIProfile profile = handler.getProfile(profileKeyBindings.get(keycode));
+            if (profile.isOpen())
+                handler.closeProfile(profile.getHandle());
+            else
+                handler.openProfile(profile.getHandle());
+        }
         return false;
     }
 
@@ -166,22 +166,25 @@ public class UIController implements ControllerListener, InputProcessor {
                     selectedComponent.onCursorUp();
                 break;
             case DPAD_UP:
-                handler.moveCursor(JOYSTICK_UP);
+                handler.moveCursor(UP);
                 break;
             case DPAD_DOWN:
-                handler.moveCursor(JOYSTICK_DOWN);
+                handler.moveCursor(DOWN);
                 break;
             case DPAD_LEFT:
-                handler.moveCursor(JOYSTICK_LEFT);
+                handler.moveCursor(LEFT);
                 break;
             case DPAD_RIGHT:
-                handler.moveCursor(JOYSTICK_RIGHT);
+                handler.moveCursor(RIGHT);
                 break;
-            case PAUSE_BUTTON:
-                if (!handler.getProfile("pausemenu").isOpen())
-                    handler.openProfile("pausemenu");
-                else handler.closeProfile("pausemenu");
-                break;
+        }
+
+        if (profileButtonBindings.containsKey(buttonCode)) {
+            UIProfile profile = handler.getProfile(profileButtonBindings.get(buttonCode));
+            if (profile.isOpen())
+                handler.closeProfile(profile.getHandle());
+            else
+                handler.openProfile(profile.getHandle());
         }
 
         return false;

@@ -21,7 +21,7 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.5.25";
+	public static final String VERSION = "0.1.6";
 
 	private static final float VIEWPORT_SCALE = 3;
 
@@ -90,13 +90,15 @@ public class Main extends ApplicationAdapter {
 		}
 		
 		ui = new UIHandler();
+		uiControl = new UIController(ui);
+		multiIn.addProcessor(uiControl);
+
 		UIProfile testProfile = new UIProfile("test2", ui);
 		ui.addProfile(testProfile);
 		UIProfile pauseMenuProfile = new UIProfile("pausemenu", ui);
 		ui.addProfile(pauseMenuProfile);
 
-		uiControl = new UIController(ui);
-		multiIn.addProcessor(uiControl);
+
 
 		Gdx.input.setInputProcessor(multiIn);
 	}

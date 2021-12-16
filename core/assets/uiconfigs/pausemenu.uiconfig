@@ -1,3 +1,4 @@
 1,2
+111,6
 button:exit,QUIT_TO_DESKTOP,          10, top-49, labelwidth, labelheight, 0, 0, false, false
 button:togglefullscreen,FULLSCREEN,   10, top-94, labelwidth, labelheight, 0, 1, true,  false
