@@ -70,14 +70,24 @@ public class UIHandler {
                 Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
                 if (Main.FULLSCREEN) {
                     Gdx.graphics.setWindowedMode(Main.WIDTH, Main.HEIGHT);
-                    MOUSE_SCALE = 1;
+                    MOUSE_SCALE_X = 1;
+                    MOUSE_SCALE_Y = 1;
                 }
                 else {
                     Gdx.graphics.setFullscreenMode(currentMode);
-                    MOUSE_SCALE = (float) Main.WIDTH / currentMode.width;
+                    float scale = (float) Main.WIDTH / currentMode.width;
+                    MOUSE_SCALE_X = scale;
+                    MOUSE_SCALE_Y = scale;
                 }
                 break;
         }
+    }
+
+    public void windowResize(int width, int height) {
+        //if (!Main.FULLSCREEN) {
+            MOUSE_SCALE_X = (float) Main.WIDTH / (width);
+            MOUSE_SCALE_Y = (float) Main.HEIGHT / (height);
+        //}
     }
 
     public void moveCursor(int direction) {

@@ -19,7 +19,8 @@ public class UIController implements ControllerListener, InputProcessor {
     public final static int LEFT = 2;
     public final static int RIGHT = 3;
 
-    public static float MOUSE_SCALE = 1;
+    public static float MOUSE_SCALE_X = 1;
+    public static float MOUSE_SCALE_Y = 1;
 
     private final UIHandler handler;
 
@@ -100,18 +101,21 @@ public class UIController implements ControllerListener, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Gdx.input.setCursorCatched(false);
-
-        UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
-        if (selectedComponent.isVisible() && selectedComponent.isSelected())
-            selectedComponent.onCursorDown();
+        if (!handler.getCurrentProfileHandle().equals("NONE")) {
+            UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+            if (selectedComponent.isVisible() && selectedComponent.isSelected())
+                selectedComponent.onCursorDown();
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
-        if (selectedComponent.isVisible() && selectedComponent.isSelected())
-            selectedComponent.onCursorUp();
+        if (!handler.getCurrentProfileHandle().equals("NONE")) {
+            UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+            if (selectedComponent.isVisible() && selectedComponent.isSelected())
+                selectedComponent.onCursorUp();
+        }
         return false;
     }
 
@@ -123,8 +127,8 @@ public class UIController implements ControllerListener, InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         Gdx.input.setCursorCatched(false);
-        handler.updateMousePosition((int) (screenX * MOUSE_SCALE),
-                (int) ((Gdx.graphics.getHeight() - screenY) * MOUSE_SCALE));
+        handler.updateMousePosition((int) (screenX * MOUSE_SCALE_X),
+                (int) ((Gdx.graphics.getHeight() - screenY) * MOUSE_SCALE_Y));
         return false;
     }
 
@@ -147,7 +151,7 @@ public class UIController implements ControllerListener, InputProcessor {
     public boolean buttonDown(Controller controller, int buttonCode) {
         Gdx.input.setCursorCatched(true);
 
-        if (buttonCode == GamePadCode.A_BUTTON.getCode()) {
+        if (buttonCode == GamePadCode.A_BUTTON.getCode() && !handler.getCurrentProfileHandle().equals("NONE")) {
             UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
             if (selectedComponent.isVisible() && selectedComponent.isSelected())
                 selectedComponent.onCursorDown();
@@ -161,9 +165,11 @@ public class UIController implements ControllerListener, InputProcessor {
     public boolean buttonUp(Controller controller, int buttonCode) {
         switch (GamePadCode.BUTTON_CODES[buttonCode]) {
             case A_BUTTON:
-                UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
-                if (selectedComponent.isVisible() && selectedComponent.isSelected())
-                    selectedComponent.onCursorUp();
+                if (!handler.getCurrentProfileHandle().equals("NONE")) {
+                    UIComponent selectedComponent = handler.getCurrentProfile().getSelectedComponent();
+                    if (selectedComponent.isVisible() && selectedComponent.isSelected())
+                        selectedComponent.onCursorUp();
+                }
                 break;
             case DPAD_UP:
                 handler.moveCursor(UP);

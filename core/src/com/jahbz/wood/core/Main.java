@@ -20,7 +20,7 @@ import com.jahbz.wood.world.entities.TestMob;
 import static com.jahbz.wood.core.Utility.random;
 
 public class Main extends ApplicationAdapter {
-	public static final String VERSION = "0.1.8";
+	public static final String VERSION = "0.1.9";
 
 	public static final float VIEWPORT_SCALE = 1.5f;
 
@@ -120,6 +120,11 @@ public class Main extends ApplicationAdapter {
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(),
 				10, 25);
 		batch.end();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		ui.windowResize(width, height);
 	}
 	
 	@Override
